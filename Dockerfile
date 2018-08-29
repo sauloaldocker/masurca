@@ -1,7 +1,7 @@
 #
 #TO BUILD: docker build -t sauloal/masurca .
 #
-#TO RUN MANUALLY : 
+#TO RUN MANUALLY :
 # FROM INSIDE THE FOLDER CONTAINING THE MOUSE DATA, RUN:
 #  chmod o+w .
 #  docker run --rm -it --name masurca_mouse -v $PWD:/data:rw sauloal/masurca bash
@@ -35,25 +35,23 @@
 #DO_HOMOPOLYMER_TRIM=0
 #END
 #
-
 FROM ubuntu:14.04
-
 
 ENV DEBIAN_FRONTEND    noninteractive
 ENV DEBIAN_PRIORITY    critical
 ENV DEBCONF_NOWARNINGS yes
 
-RUN     apt-get update
-RUN     apt-get install -y build-essential wget python python-dev bzip2 libbz2-dev gawk; \
-        apt-get clean all
+RUN apt-get update
+RUN apt-get install -y build-essential wget python python-dev bzip2 libbz2-dev gawk libboost-all-dev; \
+    apt-get clean all
 
-RUN	wget ftp://ftp.genome.umd.edu/pub/MaSuRCA/v2.2.1/MaSuRCA-2.2.1.tar.gz && \
-	tar xvf MaSuRCA-2.2.1.tar.gz && \
-	cd MaSuRCA-2.2.1 && \
-	./install.sh
+RUN	wget https://github.com/alekseyzimin/masurca/releases/download/3.2.7/MaSuRCA-3.2.7.tar.gz
 
-ENV	LD_LIBRARY_PATH /MaSuRCA-2.2.1/lib
+RUN tar xvf MaSuRCA-3.2.7.tar.gz && \
+	  cd MaSuRCA-3.2.7 && \
+	  ./install.sh
 
-ENV     PATH            $PATH:/MaSuRCA-2.2.1/bin
+ENV	LD_LIBRARY_PATH /MaSuRCA-3.2.7/lib
+ENV PATH $PATH:/MaSuRCA-3.2.7/bin
 
 WORKDIR /data
